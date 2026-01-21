@@ -3,5 +3,4 @@ class Chat < ApplicationRecord
 
   validates :visitors_token, uniqueness: true
   validates :status, presence: true
-
 end
