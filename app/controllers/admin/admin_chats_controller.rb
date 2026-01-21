@@ -1,6 +1,5 @@
 module Admin
   class AdminChatsController < BaseChatsController
-    
     def index
       @chats = Chat.all
     end
@@ -9,8 +8,8 @@ module Admin
       super
 
       return if @chat.nil?
-        
-      if(@chat[:status] == "waiting")
+
+      if @chat[:status] == "waiting"
         @chat.update(status: "active")
       end
     end
@@ -28,6 +27,5 @@ module Admin
     def path_after_end_chat
       admin_path
     end
-   
   end
 end
