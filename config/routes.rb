@@ -11,4 +11,24 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  root "home#index"
+  
+  # Клиентские маршруты (ClientChatsController)
+  # Создание чата - только у клиента
+  post "/chats", to: "client_chats#create"
+  
+  # Просмотр и действия с чатом
+  get "/chat/:token", to: "client_chats#show_chat", as: :chat
+  post "/chat/:token/messages", to: "client_chats#send_message", as: :chat_messages
+  post "/chat/:token/end", to: "client_chats#end_chat", as: :end_chat
+  
+  # Админские маршруты (AdminChatsController)
+  # Главная админ-страница
+  get "/admin", to: "admin/admin_chats#index", as: :admin
+  
+  # Работа с конкретным чатом
+  get "/admin/chat/:token", to: "admin/admin_chats#show_chat", as: :admin_chat
+  post "/admin/chat/:token/messages", to: "admin/admin_chats#send_message", as: :admin_chat_messages
+  post "/admin/chat/:token/end", to: "admin/admin_chats#end_chat", as: :admin_end_chat
+
 end

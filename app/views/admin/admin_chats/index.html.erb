@@ -1,0 +1,36 @@
+<h1>Доступные чаты:</h1>
+<% if @chats.empty? %>
+  Нет доступных чатов
+<% else %>
+  <% if !@chats.where("status LIKE \'active\'").nil?%>
+    <h2>Чаты в работе</h2>
+    <ol class="chats_list">
+      <% @chats.where("status LIKE  \'active\'").each do |chat| %>
+        <li>   
+          <%= link_to "Перейти к чату #{chat.visitors_token}", 
+          admin_chat_path(token: chat.visitors_token), 
+          class: "btn btn-primary", 
+          method: :get %>
+          
+           Создано : <%= chat.created_at.strftime("%H:%M")%>
+        </li>
+      <% end %>
+    </ol>
+  <% end %>
+
+
+  <h2>Чаты в ожидании</h2>
+  <ol class="chats_list">
+    <% @chats.where("status LIKE \'waiting\'").each do |chat| %>
+      <li>   
+        <%= link_to "Перейти к чату #{chat.visitors_token}", 
+        admin_chat_path(token: chat.visitors_token), 
+        class: "btn btn-primary", 
+        method: :get %>
+        
+         Создано : <%= chat.created_at.strftime("%H:%M")%>
+      </li>
+    <% end %>
+  </ol>
+
+<% end %>
