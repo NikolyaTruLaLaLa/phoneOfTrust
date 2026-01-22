@@ -5,7 +5,7 @@
 
   <div id="sending_form">
     <% if @chat.status == "active" %>
-      <%= render "shared/send_message_form", current_sender: "admin", current_goal_url: admin_chat_messages_path(@chat.visitors_token)%>
+      <%= render "shared/send_message_form", chat: @chat, current_sender: "admin", current_goal_url: admin_chat_messages_path(@chat.visitors_token)%>
     <% else %>
       Чат закрыт
     <% end %>
