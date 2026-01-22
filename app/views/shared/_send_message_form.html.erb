@@ -9,7 +9,8 @@
               rows: 3,
               autocomplete: "off", 
               class: "form-control",
-              data: { turbo_submits_target: "input" }%>
+              data: { turbo_submits_target: "input" },
+              onkeydown: "if(event.keyCode === 13 && !event.shiftKey) { event.preventDefault(); this.form.requestSubmit(); }"%>
       </div>
 
       <div class="action">
