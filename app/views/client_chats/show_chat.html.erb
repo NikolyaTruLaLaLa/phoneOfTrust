@@ -1,8 +1,8 @@
-<%= turbo_stream_from "chat_#{@chat.visitors_token}" %>
+<%= turbo_stream_from "chat_#{@chat.visitors_token}_visitor" %>
 
 <div id="chat-<%= @chat.visitors_token %>">
   
   <%= render "client_chats/chat_status", chat: @chat %>
-  <%= render "shared/messages" , current_sender: "visitor"%>
+  <%= render "shared/messages" , chat: @chat, current_sender: "visitor"%>
   <%= render "shared/end_chat_button", end_chat_path: end_chat_path%>
 </div>

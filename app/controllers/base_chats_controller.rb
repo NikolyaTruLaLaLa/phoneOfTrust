@@ -31,7 +31,29 @@ class BaseChatsController < ApplicationController
     )
 
     if @message.save
-      redirect_to path_chat and return
+
+      Turbo::StreamsChannel.broadcast_append_to(
+          "chat_#{@chat.visitors_token}_admin",
+          target: "messages",
+          partial: "shared/message_admin",
+          locals: { mes: @message })
+
+      Turbo::StreamsChannel.broadcast_append_to(
+          "chat_#{@chat.visitors_token}_visitor",
+          target: "messages",
+          partial: "shared/message_visitor",
+          locals: { mes: @message })
+
+      Turbo::StreamsChannel.broadcast_replace_to(
+        "chat_#{@chat.visitors_token}_#{@message.sender}",
+        target: "sending_form",
+        partial: "shared/send_message_form",
+        locals: { chat: @chat,
+                 current_sender: @message.sender,
+                 current_goal_url: @message.sender == "visitor" ? chat_messages_path(@chat.visitors_token) : admin_chat_messages_path(@chat.visitors_token) }
+      )
+
+      # redirect_to path_chat and return
     else
       flash[:alert] = "Не удалось отправить сообщение"
       redirect_to path_chat and return

@@ -29,7 +29,7 @@ module Admin
         )
 
         Turbo::StreamsChannel.broadcast_replace_to(
-          "chat_#{@chat.visitors_token}",
+          "chat_#{@chat.visitors_token}_visitor",
           target: "chat-status-#{@chat.visitors_token}",
           partial: "client_chats/chat_status",
           locals: { chat: @chat })
