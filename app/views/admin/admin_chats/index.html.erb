@@ -1,25 +1,24 @@
 <%= turbo_stream_from "admin_chats_list" %>
 <div id="admin_chats">
   <h1>Доступные чаты:</h1>
-  <% if @active_chats.empty? && @waiting_chats.empty? %>
-    Нет доступных чатов
-  <% else %>
-    <% unless @active_chats.empty? %>
-      <h2>Чаты в работе</h2>
-      <ol id="active_chats_list">
-        <% @active_chats.each do |chat| %>
-          <%= render "admin/admin_chats/chat", chat: chat%>
-        <% end %>
-      </ol>
-    <% end %>
 
-    <% unless @waiting_chats.empty? %>
-      <h2>Чаты в ожидании</h2>
-      <ol id="waiting_chats_list">
-        <% @waiting_chats.each do |chat| %>
-          <%= render "admin/admin_chats/chat", chat: chat%>
-        <% end %>
-      </ol>
-    <% end %>
+  <h2>Чаты в работе</h2>
+  <ol id="active_chats_list">
+  <% unless @active_chats.empty? %>
+      <% @active_chats.each do |chat| %>
+        <%= render "admin/admin_chats/chat", chat: chat%>
+      <% end %>
   <% end %>
+  </ol>
+
+<h2>Чаты в ожидании</h2>
+  <ol id="waiting_chats_list">
+  <% unless @waiting_chats.empty? %>
+    
+      <% @waiting_chats.each do |chat| %>
+        <%= render "admin/admin_chats/chat", chat: chat%>
+      <% end %>
+  <% end %>
+  </ol>
+  
 </div>
