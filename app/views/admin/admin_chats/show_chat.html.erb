@@ -5,15 +5,10 @@
   <h2>Чат</h2>
   
   
-    <% if @chat.status == "active" %>
-      <%= render "shared/send_message_form", chat: @chat, current_sender: "admin", current_goal_url: admin_chat_messages_path(@chat.visitors_token)%>
-    <% else %>
-      Чат закрыт
-    <% end %>
-
-
+   
   
-
+  <%= render "admin/admin_chats/chat_status", chat: @chat %>
+    
   <%= render "shared/messages" , chat: @chat, current_sender: "admin"%> 
 
   <%= render "shared/end_chat_button" , end_chat_path: admin_end_chat_path%>

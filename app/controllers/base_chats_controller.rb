@@ -1,10 +1,11 @@
 class BaseChatsController < ApplicationController
+  include ActionView::RecordIdentifier
   # RUD from CRUD chat contoroller
   # for daughters is need to implement methods:
   # - path_fallback
   # - path_chat
   # - path_after_end_chat
-
+  
   def show_chat
     # strong params??????
     @chat = Chat.find_by(visitors_token: params[:token])
@@ -64,6 +65,35 @@ class BaseChatsController < ApplicationController
     # strong params??????
     @chat = Chat.find_by(visitors_token: params[:token])
     @chat.update(status: "ended", ended_at: Time.now)
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "chat_#{@chat.visitors_token}_visitor",
+      target: "chat-status-#{@chat.visitors_token}",
+      partial: "client_chats/chat_status",
+      locals: {chat: @chat}
+    )
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "chat_#{@chat.visitors_token}_admin",
+      target: "sending_form",
+      partial: "admin/admin_chats/chat_status",
+      locals: {chat: @chat}
+    )
+
+    Turbo::StreamsChannel.broadcast_remove_to(
+      "admin_chats_list",
+      target: dom_id(@chat)
+    )
+
+    Turbo::StreamsChannel.broadcast_remove_to(
+      "chat_#{@chat.visitors_token}_admin",
+      target: "end_chat_button"
+    )
+
+    Turbo::StreamsChannel.broadcast_remove_to(
+      "chat_#{@chat.visitors_token}_visitor",
+      target: "end_chat_button"
+    )
 
     redirect_to path_after_end_chat
   end

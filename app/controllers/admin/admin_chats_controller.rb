@@ -1,6 +1,5 @@
 module Admin
   class AdminChatsController < BaseChatsController
-    include ActionView::RecordIdentifier
 
     def index
       # Заранее разделяем чаты, чтобы избежать множественных запросов where в шаблоне
