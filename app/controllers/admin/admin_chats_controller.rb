@@ -1,7 +1,6 @@
 module Admin
   class AdminChatsController < ApplicationController
     include ChatActions
-    include AdminAuth
 
     def index
       @active_chats = Chat.where(status: "active")
