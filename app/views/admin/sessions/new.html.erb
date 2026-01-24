@@ -1,0 +1,20 @@
+<%# app/views/admin/sessions/new.html.erb %>
+<div class="container">
+  <h2>Вход в админ-панель</h2>
+  
+  <%= form_with url: admin_login_path, local: true do |form| %>
+    <div class="field">
+      <%= form.label :name, 'Имя администратора' %>
+      <%= form.text_field :name, required: true, class: 'form-control' %>
+    </div>
+    
+    <div class="field">
+      <%= form.label :password, 'Пароль' %>
+      <%= form.password_field :password, required: true, class: 'form-control' %>
+    </div>
+    
+    <div class="actions">
+      <%= form.submit 'Войти', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
