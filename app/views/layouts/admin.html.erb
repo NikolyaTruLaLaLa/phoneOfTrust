@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Админ-панель | TrustPhone</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    
+    <style>
+      /* Стили только для админки */
+      .admin-header {
+        background: #2c3e50;
+        color: white;
+        padding: 1rem;
+        margin-bottom: 2rem;
+      }
+      
+      .admin-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .admin-main {
+        padding: 0 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <%# Шапка админки с кнопкой выхода %>
+    <header class="admin-header">
+      <nav class="admin-nav">
+        <div>
+          <h3 style="margin: 0;">Админ-панель TrustPhone</h3>
+        </div>
+        
+        <% if administrator_signed_in? %>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span>Администратор: <strong><%= current_administrator.name %></strong></span>
+            <%= button_to "Выйти", admin_logout_path, 
+                          method: :delete, 
+                          class: "btn btn-outline-light btn-sm",
+                          form: { style: "margin: 0;" } %>
+          </div>
+        <% end %>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <%# Flash сообщения %>
+      <% if notice %>
+        <div class="alert alert-info"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-danger"><%= alert %></div>
+      <% end %>
+      
+      <%# Содержимое страницы %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

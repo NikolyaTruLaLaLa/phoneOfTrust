@@ -1,9 +1,9 @@
 module Admin
   class AdminChatsController < ApplicationController
     include ChatActions
+    include AdminAuth
 
     def index
-      # Заранее разделяем чаты, чтобы избежать множественных запросов where в шаблоне
       @active_chats = Chat.where(status: "active")
       @waiting_chats = Chat.where(status: "waiting")
     end
@@ -39,7 +39,7 @@ module Admin
     protected
 
     def path_fallback
-      admin_path
+      admin_root_path
     end
 
     def path_chat
@@ -47,7 +47,7 @@ module Admin
     end
 
     def path_after_end_chat
-      admin_path
+      admin_root_path
     end
   end
 end
