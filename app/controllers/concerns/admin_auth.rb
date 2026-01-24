@@ -10,7 +10,7 @@ module AdminAuth
   end
 
   private
-  
+
   def authenticate_administrator!
     unless current_administrator
       redirect_to admin_login_path,
@@ -46,5 +46,4 @@ module AdminAuth
     session.delete(:administrator_expires_at)
     @current_administrator = nil
   end
-
 end
