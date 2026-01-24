@@ -1,0 +1,6 @@
+
+<div class="<%= mes.sender == "visitor" ? 'my_message' : 'not_my_message' %>">
+    <strong><%= mes.sender %></strong>
+    <%= mes.content %>
+    <small><%= mes.created_at.strftime("%H:%M")%></small>
+</div>

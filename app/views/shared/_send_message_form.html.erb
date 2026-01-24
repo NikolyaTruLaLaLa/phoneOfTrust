@@ -1,17 +1,25 @@
-<%= form_with(model: [@chat, Message.new], url: current_goal_url, local:true) do |form|  %>
-        <%= form.hidden_field :sender, value: current_sender %>
-        <%= form.hidden_field :token, value: @chat.visitors_token %>
-        <div class="field">
-          <%= form.text_area :content,
-                placeholder: "Введите ваше сообщение...",
-                rows: 3,
-                autocomplete: "off", 
-                class: "form-control"%>
-        </div>
+<div id="sending_form">
+  <%if chat.status == "active" %>  
+    <%= form_with(model: [chat, Message.new], url: current_goal_url, data: { turbo: true }) do |form|  %>
+      <%= form.hidden_field :sender, value: current_sender %>
+      <%= form.hidden_field :token, value: chat.visitors_token %>
+      <div class="field">
+        <%= form.text_area :content,
+              placeholder: "Введите ваше сообщение...",
+              rows: 3,
+              autocomplete: "off", 
+              class: "form-control",
+              data: { turbo_submits_target: "input" },
+              onkeydown: "if(event.keyCode === 13 && !event.shiftKey) { event.preventDefault(); this.form.requestSubmit(); }"%>
+      </div>
 
-        <div class="action">
-          <%= form.submit "Отправить",
-                class: "btn btn-primary mt-2",
-                data: {disable_with: "Отправка..." }%>
-        </div>
-<% end %>
+      <div class="action">
+        <%= form.submit "Отправить",
+              class: "btn btn-primary mt-2",
+              data: {disable_with: "Отправка..." }%>
+      </div>
+    <% end %>
+  <% else %>
+    Чат закрыт 
+  <% end %>
+</div>

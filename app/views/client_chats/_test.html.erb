@@ -1,0 +1,21 @@
+<% if chat.status == 'waiting' %>
+  <div id="chat-status-<%= chat.visitors_token %>">
+    <h2>Чат</h2>
+    <p>Ожидаем подключение оператора.....</p>
+    
+    <div id="sending_form">
+      Чат будет доступен с подключением оператора
+    </div>
+  </div>
+<% else %>
+  <div id="chat-status-<%= chat.visitors_token %>">
+    <h2>Чат</h2>
+    
+    <div id="sending_form">
+      <%= render "shared/send_message_form", 
+                 chat: chat,  
+                 current_sender: "visitor", 
+                 current_goal_url: chat_messages_path(chat.visitors_token) %>
+    </div>
+  </div>
+<% end %>

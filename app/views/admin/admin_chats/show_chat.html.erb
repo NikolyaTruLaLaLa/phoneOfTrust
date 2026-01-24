@@ -1,16 +1,15 @@
+<%= turbo_stream_from "chat_#{@chat.visitors_token}_admin" %>
+
+
 <div id="chat-<%= @chat.visitors_token %>">
   <h2>Чат</h2>
+  
+  
+   
+  
+  <%= render "admin/admin_chats/chat_status", chat: @chat %>
+    
+  <%= render "shared/messages" , chat: @chat, current_sender: "admin"%> 
 
-  <%= render "shared/messages" , current_sender: "admin"%>
-
-  <div id="sending_form">
-    <% if @chat.status == "active" %>
-      <%= render "shared/send_message_form", current_sender: "admin", current_goal_url: admin_chat_messages_path(@chat.visitors_token)%>
-    <% else %>
-      Чат закрыт
-    <% end %>
-
-
-  </div>
   <%= render "shared/end_chat_button" , end_chat_path: admin_end_chat_path%>
 </div>

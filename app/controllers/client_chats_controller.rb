@@ -1,4 +1,6 @@
-class ClientChatsController < BaseChatsController
+class ClientChatsController < ApplicationController
+  include ChatActions
+
   def create
     retries = 3
     retries.times do |attempt|
@@ -7,6 +9,14 @@ class ClientChatsController < BaseChatsController
       @chat = Chat.new(status: "waiting", visitors_token: token)
 
       if @chat.save
+
+        Turbo::StreamsChannel.broadcast_append_to(
+          "admin_chats_list",
+          target: "waiting_chats_list",
+          partial: "admin/admin_chats/chat",
+          locals: { chat: @chat }
+        )
+
         redirect_to path_chat and return
       end
 

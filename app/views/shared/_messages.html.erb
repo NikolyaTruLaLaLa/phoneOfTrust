@@ -1,18 +1,6 @@
 <div id="messages">
     <!-- работает без этого order(:created_at). WHYYY?-->
-     <% @chat.messages.each do |mes| %>
-        <% if mes.sender == current_sender %>
-          <div class="my_message">
-            <strong><%= mes.sender %></strong>
-            <%= mes.content %>
-            <small><%= mes.created_at.strftime("%H:%M")%></small>
-          </div>
-        <% else %>
-          <div class="not_my_message">
-            <strong><%= mes.sender %></strong>
-            <%= mes.content %>
-            <small><%= mes.created_at.strftime("%H:%M")%></small>
-          </div>
-        <% end %>
+     <% chat.messages.each do |mes| %>
+        <%= render "shared/message_#{current_sender}", mes: mes%>
     <% end %> 
 </div>
