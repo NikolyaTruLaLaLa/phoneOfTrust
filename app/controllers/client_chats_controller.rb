@@ -1,4 +1,6 @@
-class ClientChatsController < BaseChatsController
+class ClientChatsController < ApplicationController
+  include ChatActions
+
   def create
     retries = 3
     retries.times do |attempt|

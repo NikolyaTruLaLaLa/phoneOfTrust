@@ -1,5 +1,6 @@
 module Admin
-  class AdminChatsController < BaseChatsController
+  class AdminChatsController < ApplicationController
+    include ChatActions
 
     def index
       # Заранее разделяем чаты, чтобы избежать множественных запросов where в шаблоне

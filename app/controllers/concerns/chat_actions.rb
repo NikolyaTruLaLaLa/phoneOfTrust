@@ -1,11 +1,10 @@
-class BaseChatsController < ApplicationController
-  include ActionView::RecordIdentifier
-  # RUD from CRUD chat contoroller
-  # for daughters is need to implement methods:
-  # - path_fallback
-  # - path_chat
-  # - path_after_end_chat
-  
+module ChatActions
+  extend ActiveSupport::Concern
+
+  included do
+    include ActionView::RecordIdentifier
+  end
+
   def show_chat
     # strong params??????
     @chat = Chat.find_by(visitors_token: params[:token])
@@ -32,28 +31,7 @@ class BaseChatsController < ApplicationController
     )
 
     if @message.save
-
-      Turbo::StreamsChannel.broadcast_append_to(
-          "chat_#{@chat.visitors_token}_admin",
-          target: "messages",
-          partial: "shared/message_admin",
-          locals: { mes: @message })
-
-      Turbo::StreamsChannel.broadcast_append_to(
-          "chat_#{@chat.visitors_token}_visitor",
-          target: "messages",
-          partial: "shared/message_visitor",
-          locals: { mes: @message })
-
-      Turbo::StreamsChannel.broadcast_replace_to(
-        "chat_#{@chat.visitors_token}_#{@message.sender}",
-        target: "sending_form",
-        partial: "shared/send_message_form",
-        locals: { chat: @chat,
-                 current_sender: @message.sender,
-                 current_goal_url: @message.sender == "visitor" ? chat_messages_path(@chat.visitors_token) : admin_chat_messages_path(@chat.visitors_token) }
-      )
-
+      broadcast_messages
       # redirect_to path_chat and return
     else
       flash[:alert] = "Не удалось отправить сообщение"
@@ -62,22 +40,68 @@ class BaseChatsController < ApplicationController
   end
 
   def end_chat
-    # strong params??????
     @chat = Chat.find_by(visitors_token: params[:token])
     @chat.update(status: "ended", ended_at: Time.now)
 
+    broadcast_chat_ended
+    redirect_to path_after_end_chat
+  end
+
+  protected
+  def message_params
+    params.require(:message).permit(:sender, :content, :token)
+  end
+
+  def path_fallback
+    raise NotImplementedError, "#{self.class} должен реализовать метод #{__method__}"
+  end
+
+  def path_chat
+    raise NotImplementedError, "#{self.class} должен реализовать метод #{__method__}"
+  end
+
+  def path_after_end_chat
+    raise NotImplementedError, "#{self.class} должен реализовать метод #{__method__}"
+  end
+
+  private
+
+  def broadcast_messages
+    Turbo::StreamsChannel.broadcast_append_to(
+          "chat_#{@chat.visitors_token}_admin",
+          target: "messages",
+          partial: "shared/message_admin",
+          locals: { mes: @message })
+
+    Turbo::StreamsChannel.broadcast_append_to(
+        "chat_#{@chat.visitors_token}_visitor",
+        target: "messages",
+        partial: "shared/message_visitor",
+        locals: { mes: @message })
+
+    Turbo::StreamsChannel.broadcast_replace_to(
+      "chat_#{@chat.visitors_token}_#{@message.sender}",
+      target: "sending_form",
+      partial: "shared/send_message_form",
+      locals: { chat: @chat,
+                current_sender: @message.sender,
+                current_goal_url: @message.sender == "visitor" ? chat_messages_path(@chat.visitors_token) : admin_chat_messages_path(@chat.visitors_token) }
+    )
+  end
+
+  def broadcast_chat_ended
     Turbo::StreamsChannel.broadcast_replace_to(
       "chat_#{@chat.visitors_token}_visitor",
       target: "chat-status-#{@chat.visitors_token}",
       partial: "client_chats/chat_status",
-      locals: {chat: @chat}
+      locals: { chat: @chat }
     )
 
     Turbo::StreamsChannel.broadcast_replace_to(
       "chat_#{@chat.visitors_token}_admin",
       target: "sending_form",
       partial: "admin/admin_chats/chat_status",
-      locals: {chat: @chat}
+      locals: { chat: @chat }
     )
 
     Turbo::StreamsChannel.broadcast_remove_to(
@@ -94,26 +118,5 @@ class BaseChatsController < ApplicationController
       "chat_#{@chat.visitors_token}_visitor",
       target: "end_chat_button"
     )
-
-    redirect_to path_after_end_chat
-  end
-
-  protected
-
-  def message_params
-    params.require(:message).permit(:sender, :content, :token)
-  end
-
-  def path_fallback
-    raise NotImplementedError, "#{self.class} должен реализовать метод #{__method__}"
-  end
-
-  def path_chat
-    # chat_path(token: @chat.visitors_token)
-    raise NotImplementedError, "#{self.class} должен реализовать метод #{__method__}"
-  end
-
-  def path_after_end_chat
-    raise NotImplementedError, "#{self.class} должен реализовать метод #{__method__}"
   end
 end
