@@ -1,9 +1,9 @@
 module Admin
   class AdminChatsController < ApplicationController
     include ChatActions
+    include AdminAuth
 
     def index
-      # Заранее разделяем чаты, чтобы избежать множественных запросов where в шаблоне
       @active_chats = Chat.where(status: "active")
       @waiting_chats = Chat.where(status: "waiting")
     end
