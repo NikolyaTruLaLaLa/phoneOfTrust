@@ -1,5 +1,6 @@
 class ClientChatsController < ApplicationController
   include ChatActions
+  include VisitorAuth
 
   def create
     retries = 3

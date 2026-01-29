@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   post "/chat/:token/messages", to: "client_chats#send_message", as: :chat_messages
   post "/chat/:token/end", to: "client_chats#end_chat", as: :end_chat
 
+  get "login", to: "sessions#new", as: :login
+  get "initialize", to: "sessions#create", as: :initialize_visitor
+  delete "logout", to: "sessions#destroy", as: :logout
 
   namespace :admin do
     get "login", to: "sessions#new", as: :login
