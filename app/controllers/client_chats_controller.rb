@@ -7,7 +7,7 @@ class ClientChatsController < ApplicationController
     retries.times do |attempt|
       token = SecureRandom.urlsafe_base64(10)
       # token = "aaaaaaaaaa"
-      @chat = Chat.new(status: "waiting", visitors_token: token)
+      @chat = Chat.new(status: "waiting", visitors_token: token, visitors_init_token: session[:current_user_id])
 
       if @chat.save
 

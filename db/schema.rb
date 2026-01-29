@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_24_152610) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_29_174859) do
   create_table "administrators", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
@@ -23,6 +23,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_24_152610) do
     t.datetime "ended_at"
     t.string "status"
     t.datetime "updated_at", null: false
+    t.string "visitors_init_token"
     t.string "visitors_token"
     t.index ["visitors_token"], name: "index_chats_on_visitors_token", unique: true
   end
