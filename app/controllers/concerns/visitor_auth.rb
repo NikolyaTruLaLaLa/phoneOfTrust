@@ -5,6 +5,7 @@ module VisitorAuth
     before_action :check_is_this_client_chat?
   end
 
+  # works only with client chat controller
   def check_is_this_client_chat?
     chat = Chat.find_by(visitors_token: params[:token])
 

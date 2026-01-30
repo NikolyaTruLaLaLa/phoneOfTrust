@@ -10,9 +10,9 @@ class Chat < ApplicationRecord
                                                               }
   validate :protect_closed_status_change, on: :update
 
-def protect_closed_status_change
-  if status_was == 'ended' && status_changed?
-    errors.add(:status, "закрытые записи нельзя изменять")
+  def protect_closed_status_change
+    if status_was == 'ended' && status_changed?
+      errors.add(:status, "закрытые записи нельзя изменять")
+    end
   end
-end
 end
