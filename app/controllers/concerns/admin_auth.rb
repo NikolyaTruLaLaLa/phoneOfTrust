@@ -1,7 +1,7 @@
 module AdminAuth
   extend ActiveSupport::Concern
 
-   LIFE_OF_AUTH = 12  # hours
+  LIFE_OF_AUTH = 12  # hours
 
   included do
     layout "admin"

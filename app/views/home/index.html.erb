@@ -1,3 +1,9 @@
-<%= form_with(url: chats_path, method: :post) do |form| %>
-  <%= form.submit "Начать чат" %>
+<% if current_user_id.present? %>
+  <% if !@chat.nil? %>
+    <%= render "home/back_to_chat_button", chat: @chat%>
+  <% else %>
+    <%= render "home/start_chat_button"%>  
+  <% end %>
+<% else %>
+  <%= render "home/start_chat_button"%>  
 <% end %>
