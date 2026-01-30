@@ -18,10 +18,9 @@ class SessionsController < ApplicationController
     end
   end
 
-  #unused
+  # unused
   def destroy
     reset_visitor_session
     redirect_to root_path
   end
-
 end
