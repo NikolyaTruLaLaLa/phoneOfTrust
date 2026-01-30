@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  include VisitorAuth
+  include VisitorCreateAuthToken
 
   skip_before_action :authenticate_visitor!, only: [ :new, :create, :destroy ]
 

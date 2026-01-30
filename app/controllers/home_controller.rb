@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
 
-include VisitorAuth
+include VisitorCreateAuthToken
 
 def index
 end

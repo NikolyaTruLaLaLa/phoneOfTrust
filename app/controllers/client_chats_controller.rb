@@ -1,6 +1,9 @@
 class ClientChatsController < ApplicationController
   include ChatActions
+  include VisitorCreateAuthToken
   include VisitorAuth
+
+  skip_before_action :check_is_this_client_chat?, only: [:create]
 
   def create
     retries = 3
