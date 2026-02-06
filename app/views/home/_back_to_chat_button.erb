@@ -1,3 +1,1 @@
-<%= form_with(url: chat_path(token: chat.visitors_token) , method: :get) do |form|%>
-    <%= form.submit "Продолжить чат" %>
-<% end %>
+<%= button_to "Продолжить чат", chat_path(token: chat.visitors_token), method: :get, class: "btn btn-primary" %>

@@ -6,4 +6,5 @@ def index
     @chat = Chat.find_by(visitors_init_token: current_user_id, status: [ "waiting", "active" ])
   end
 end
+
 end
