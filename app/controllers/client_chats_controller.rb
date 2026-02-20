@@ -31,6 +31,18 @@ class ClientChatsController < ApplicationController
     redirect_to path_fallback
   end
 
+
+  def send_typing
+    @chat = Chat.find_by(visitors_token: typing_params[:visitors_token])
+
+    Turbo::StreamChannel.broadcast_replace_to(
+      "chat_#{@chat.visitors_token}_admin",
+      target: "typing_visitor",
+      partial: "admin/admin_chats/typing",
+      locals: { content: typing_params[:content]}
+    )
+  end
+
   private
 
   def path_fallback
@@ -43,5 +55,9 @@ class ClientChatsController < ApplicationController
 
   def path_after_end_chat
     root_path
+  end
+
+  def typing_params
+    params.require(:text).permit(:visitors_token, :content)
   end
 end
