@@ -3,7 +3,8 @@ class ClientChatsController < ApplicationController
   include VisitorCreateAuthToken
   include VisitorAuth
 
-  skip_before_action :check_is_this_client_chat?, only: [ :create ]
+  skip_before_action :check_is_this_client_chat?, only: [ :create, :send_typing ]
+
 
   def create
     retries = 3
@@ -14,7 +15,7 @@ class ClientChatsController < ApplicationController
 
       if @chat.save
 
-        Turbo::StreamsChannel.broadcast_append_to(
+        Turbo::StreamChannel.broadcast_append_to(
           "admin_chats_list",
           target: "waiting_chats_list",
           partial: "admin/admin_chats/chat",
@@ -35,12 +36,26 @@ class ClientChatsController < ApplicationController
   def send_typing
     @chat = Chat.find_by(visitors_token: typing_params[:visitors_token])
 
-    Turbo::StreamChannel.broadcast_replace_to(
-      "chat_#{@chat.visitors_token}_admin",
-      target: "typing_visitor",
-      partial: "admin/admin_chats/typing",
-      locals: { content: typing_params[:content]}
-    )
+    print(current_user_id)
+    print(@chat[:visitors_init_token])
+    if @chat && current_user_id == @chat[:visitors_init_token]
+      print()
+      print()
+      print(typing_params[:content])
+      print()
+      print()
+
+      Turbo::StreamsChannel.broadcast_replace_to(
+        "chat_#{@chat.visitors_token}_admin",
+        target: "typing_visitor",
+        partial: "admin/admin_chats/typing",
+        locals: { content: typing_params[:content] }
+      )
+
+      head :ok
+    else
+      head :forbidden
+    end
   end
 
   private
