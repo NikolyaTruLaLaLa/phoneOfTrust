@@ -17,7 +17,7 @@ export default class extends Controller {
     clearTimeout(this.typingTimer)
     this.typingTimer = setTimeout(() => {
       this.sendTyping(this.inputTarget.value)
-    }, 300)
+    }, 20)
   }
 
   sendTyping(text) {

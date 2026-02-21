@@ -15,7 +15,7 @@ class ClientChatsController < ApplicationController
 
       if @chat.save
 
-        Turbo::StreamChannel.broadcast_append_to(
+        Turbo::StreamsChannel.broadcast_append_to(
           "admin_chats_list",
           target: "waiting_chats_list",
           partial: "admin/admin_chats/chat",
