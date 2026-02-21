@@ -25,8 +25,8 @@ module VisitorCreateAuthToken
   end
 
   def visitor_signed_in?
-    #print("LOOO")
-    #print(@current_user_id)
+    # print("LOOO")
+    # print(@current_user_id)
     current_user_id.present?
   end
 
