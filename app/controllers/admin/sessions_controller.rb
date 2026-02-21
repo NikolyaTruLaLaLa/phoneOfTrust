@@ -7,7 +7,7 @@ module Admin
     skip_before_action :authenticate_administrator!, only: [ :new, :create, :destroy ]
 
     def new
-      redirect_to admin_path if administrator_signed_in?
+      redirect_to admin_root_path if administrator_signed_in?
     end
 
     def create
