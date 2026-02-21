@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get "initialize", to: "sessions#create", as: :initialize_visitor
   delete "logout", to: "sessions#destroy", as: :logout
 
+  post "send_typing", to: "client_chats#send_typing"
+
   namespace :admin do
     get "login", to: "sessions#new", as: :login
     post "login", to: "sessions#create"
