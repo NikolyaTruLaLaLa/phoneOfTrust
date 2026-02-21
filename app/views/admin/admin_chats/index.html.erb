@@ -1,4 +1,8 @@
 <%= turbo_stream_from "admin_chats_list" %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
 <div id="admin_chats">
   <h1>Доступные чаты:</h1>
 
