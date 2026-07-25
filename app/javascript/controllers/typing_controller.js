@@ -6,11 +6,16 @@ export default class extends Controller {
 
   connect() {
     this.typingTimer = null
-    this.inputTarget.addEventListener("input", this.debouncedSend.bind(this))
+    this.boundDebouncedSend = this.debouncedSend.bind(this)
+    this.boundHandleKeydown = this.handleKeydownEnter.bind(this)
+    this.inputTarget.addEventListener("input", this.boundDebouncedSend)
+    this.inputTarget.addEventListener("keydown", this.boundHandleKeydown)
   }
 
   disconnect() {
     clearTimeout(this.typingTimer)
+    this.inputTarget.removeEventListener("input", this.boundDebouncedSend)
+    this.inputTarget.removeEventListener("keydown", this.boundHandleKeydown)
   }
 
   debouncedSend() {
@@ -18,6 +23,14 @@ export default class extends Controller {
     this.typingTimer = setTimeout(() => {
       this.sendTyping(this.inputTarget.value)
     }, 20)
+  }
+
+  handleKeydownEnter(event){
+    if (event.key == "Enter"){
+      event.preventDefault()
+      clearTimeout(this.typingTimer)
+      this.sendTyping("")
+    }
   }
 
   sendTyping(text) {
