@@ -1,24 +1,15 @@
-# README
+Телефон доверия — веб-приложение для анонимного онлайн-чата между клиентами и администраторами. Проект построен на Ruby on Rails с использованием Action Cable для реального времени и Hotwire/Turbo для динамических обновлений интерфейса.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# 🚀 Особенности
+- Анонимные чаты для клиентов — пользователи могут начать диалог без регистрации
 
-Things you may want to cover:
+- Административная панель — управление входящими обращениями и ответами
 
-* Ruby version
+- Обмен сообщениями в реальном времени — через WebSocket (Action Cable)
 
-* System dependencies
+- Администратор видит, что печатает пользователь через Stimulus контроллер
 
-* Configuration
+# 🛠 Технологический стек:	
+Ruby on Rails, WebSocket (Action Cable), Hotwire, Turbo, Stimulus
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
